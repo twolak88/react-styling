@@ -13,18 +13,18 @@ class App extends Component {
   };
 
   nameChangedHandler = (event, id) => {
-    const personIndex = this.state.persons.findIndex(p => p.id === id);
+    const personIndex = this.state.persons.findIndex((p) => p.id === id);
     const person = {
       ...this.state.persons[personIndex],
       name: event.target.value
-    }
+    };
 
     const persons = [...this.state.persons];
     persons[personIndex] = person;
     this.setState({
       persons: persons
     });
-  }
+  };
 
   deletePersonHandler = (index) => {
     const persons = [...this.state.persons];
@@ -32,13 +32,13 @@ class App extends Component {
     this.setState({
       persons: persons
     });
-  }
+  };
 
   togglePersonsHandler = () => {
     this.setState({
-      showPersons: !this.state.showPersons
+      showPersons: !this.state.showPersons,
     });
-  }
+  };
 
   render() {
     const buttonStyle = {
@@ -49,19 +49,22 @@ class App extends Component {
       padding: '8px',
       cursor: 'pointer'
     };
-    
+
     let persons = null;
 
     if (this.state.showPersons) {
       persons = (
         <div>
           {this.state.persons.map((person, idx) => {
-            return <Person 
-              name={ person.name } 
-              age={ person.age }
-              click={ this.deletePersonHandler.bind(this, idx) }
-              key={ person.id } 
-              changed={ (event) => this.nameChangedHandler(event, person.id) }/>;
+            return (
+              <Person
+                name={person.name}
+                age={person.age}
+                click={this.deletePersonHandler.bind(this, idx)}
+                key={person.id}
+                changed={(event) => this.nameChangedHandler(event, person.id)}
+              />
+            );
           })}
         </div>
       );
@@ -69,14 +72,26 @@ class App extends Component {
       buttonStyle.backgroundColor = 'red';
     }
 
+    let classes = [];
+
+    if (this.state.persons.length <= 2) {
+      classes.push('red');
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push('bold');
+    }
+
+
     return (
-      <div className='App'>
+      <div className="App">
         <h1>Hi, this is my first react app!!</h1>
-        <h1>another heading can be add only insight App</h1>
+        <p className={classes.join(' ')}>
+          {!this.state.persons.length ? 'No person' : this.state.persons.length + (this.state.persons.length > 1 ? ' people': ' person')} on the list!
+        </p>
         <button style={buttonStyle} onClick={this.togglePersonsHandler}>
           Toggle Persons
         </button>
-        { persons }
+        {persons}
       </div>
     );
   }
